@@ -98,6 +98,12 @@ function flee(e) {
 
   if (!noBtn.classList.contains('is-floating')) {
     const r = noBtn.getBoundingClientRect();
+    // 원래 자리에 빈 칸을 남겨서 "네" 버튼이 늘어나 그 자리를 차지하지 않게
+    const holder = document.createElement('span');
+    holder.className = 'no-holder';
+    holder.style.width = `${r.width}px`;
+    holder.style.height = `${r.height}px`;
+    noBtn.replaceWith(holder);
     noBtn.style.left = `${r.left}px`;
     noBtn.style.top = `${r.top}px`;
     noBtn.classList.add('is-floating');
@@ -120,11 +126,15 @@ function flee(e) {
   noBtn.style.top = `${y}px`;
 }
 
+// touchstart에서 preventDefault 해야 모바일의 뒤늦은 click이 아예 안 생김
+noBtn.addEventListener('touchstart', flee, { passive: false });
 noBtn.addEventListener('pointerdown', flee);
 noBtn.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') flee(e); });
 noBtn.addEventListener('click', flee); // 키보드 접근 대비
 
 yesBtn.addEventListener('click', () => {
+  // "아니오" 피한 직후 같은 터치가 "네"로 들어오는 것 방지
+  if (Date.now() - lastFlee < 600) return;
   state.date = CONFIG.date;
   go('time');
 });

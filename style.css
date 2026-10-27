@@ -144,6 +144,7 @@ button { cursor: pointer; border: 0; background: none; -webkit-tap-highlight-col
 .choice { display: flex; gap: 10px; }
 .choice .btn { flex: 1; }
 .btn-yes { position: relative; z-index: 2; transform-origin: center; }
+.no-holder { flex: 1; }
 
 .btn-no.is-floating {
   position: fixed; z-index: 50;
