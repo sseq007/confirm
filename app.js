@@ -189,16 +189,43 @@ timeNext.addEventListener('click', () => go('course'));
 const courseBox = $('#courseOptions');
 const courseNext = $('#courseNext');
 
-CONFIG.courses.forEach((c) => {
-  courseBox.appendChild(
-    makeOpt(`<span class="opt-emoji">${c.emoji}</span><span class="opt-title">${c.title}</span>`, (btn) => {
-      const on = btn.getAttribute('aria-pressed') !== 'true';
-      btn.setAttribute('aria-pressed', String(on));
-      on ? state.courses.add(c.title) : state.courses.delete(c.title);
-      courseNext.disabled = state.courses.size === 0;
-    })
+const escapeHtml = (s) => s.replace(/[&<>"']/g, (ch) => `&#${ch.charCodeAt(0)};`);
+
+function setCourse(btn, title, on) {
+  btn.setAttribute('aria-pressed', String(on));
+  on ? state.courses.add(title) : state.courses.delete(title);
+  courseNext.disabled = state.courses.size === 0;
+}
+
+function addCourseOpt(c) {
+  const btn = makeOpt(
+    `<span class="opt-emoji">${c.emoji}</span><span class="opt-title">${escapeHtml(c.title)}</span>`,
+    (b) => setCourse(b, c.title, b.getAttribute('aria-pressed') !== 'true')
   );
+  courseBox.appendChild(btn);
+  return btn;
+}
+
+CONFIG.courses.forEach(addCourseOpt);
+
+// 직접 입력해서 추가하기
+const customCourse = $('#customCourse');
+$('#customCourseForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const title = customCourse.value.trim();
+  if (!title) return;
+  const existing = [...courseBox.querySelectorAll('.opt')].find(
+    (o) => o.querySelector('.opt-title').textContent === title
+  );
+  if (existing) {
+    setCourse(existing, title, true);
+  } else {
+    setCourse(addCourseOpt({ emoji: '✏️', title }), title, true);
+    toast(`"${title}" 추가했어요`);
+  }
+  customCourse.value = '';
 });
+
 courseNext.addEventListener('click', () => go('done'));
 
 // ----- 4. 완료 -----
@@ -212,7 +239,7 @@ function summaryRows() {
 }
 
 function renderDone() {
-  $('#summary').innerHTML = summaryRows().map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
+  $('#summary').innerHTML = summaryRows().map(([k, v]) => `<dt>${k}</dt><dd>${escapeHtml(v)}</dd>`).join('');
   confetti();
 }
 
