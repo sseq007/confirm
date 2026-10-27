@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c2a3f">
+  <title>📩 채민님, 디자인 리뷰 요청이 도착했어요</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <span class="tb-mark" aria-hidden="true">✦</span>
+    <p class="tb-file"><span class="tb-proj">Drafts /</span> <strong>Saturday_Plan_v1_final_진짜최종</strong></p>
+    <span class="tb-page" id="pageLabel">Cover</span>
+  </header>
+
+  <main class="canvas">
+    <!-- 0. 표지 -->
+    <section class="screen is-active" data-screen="intro">
+      <div class="notice">
+        <div class="notice-icon" aria-hidden="true">📩</div>
+        <p class="eyebrow">새 리뷰 요청 1건</p>
+        <h1 class="notice-title"><span data-her></span>, 디자인 리뷰<br>부탁드려도 될까요?</h1>
+        <p class="notice-desc">예상 소요 시간 약 1분 · 마감은 이번 주 토요일이에요</p>
+        <button class="btn btn-primary btn-block" data-go="ask">파일 열기</button>
+      </div>
+    </section>
+
+    <!-- 1. 질문 -->
+    <section class="screen" data-screen="ask">
+      <p class="frame-label">Frame 1 — Question</p>
+      <div class="frame">
+        <div class="comment">
+          <span class="avatar" data-me-initial aria-hidden="true"></span>
+          <div>
+            <p class="comment-meta"><strong data-me></strong> · 방금</p>
+            <p class="comment-body"><span data-her></span>, 이번 주 토요일 <strong data-date></strong>에<br><strong data-place></strong>에서 만나실래요? 🙂</p>
+          </div>
+        </div>
+        <div class="choice">
+          <button class="btn btn-primary btn-yes" id="yesBtn">네, 좋아요</button>
+          <button class="btn btn-ghost btn-no" id="noBtn">아니오</button>
+        </div>
+      </div>
+      <button class="link-subtle" data-go="alt">토요일은 어려우세요? 다른 날 골라주세요</button>
+    </section>
+
+    <!-- 1-1. 다른 날짜 (진짜 거절할 수 있는 길) -->
+    <section class="screen" data-screen="alt">
+      <p class="frame-label">Frame 1-1 — Another day</p>
+      <div class="frame">
+        <h2 class="q">그럼 언제가 편하세요?</h2>
+        <p class="q-sub">편한 날 골라주시면 맞출게요</p>
+        <div class="date-grid" id="dateOptions"></div>
+      </div>
+      <button class="btn btn-primary btn-block" id="altNext" disabled>이 날로 할게요</button>
+      <button class="link-subtle" data-go="bye">다음에 할게요</button>
+    </section>
+
+    <!-- 2. 시간 -->
+    <section class="screen" data-screen="time">
+      <p class="frame-label">Frame 2 — Time</p>
+      <div class="frame">
+        <h2 class="q">몇 시에 만날까요?</h2>
+        <p class="q-sub"><span data-date-picked></span> · <span data-place></span></p>
+        <div class="options" id="timeOptions"></div>
+        <label class="custom-time">
+          <span>직접 정할래요</span>
+          <input type="time" id="customTime" step="1800">
+        </label>
+      </div>
+      <button class="btn btn-primary btn-block" id="timeNext" disabled>다음</button>
+    </section>
+
+    <!-- 3. 코스 -->
+    <section class="screen" data-screen="course">
+      <p class="frame-label">Frame 3 — Course</p>
+      <div class="frame">
+        <h2 class="q">하고 싶은 거 다 골라주세요</h2>
+        <p class="q-sub">여러 개 골라도 돼요</p>
+        <div class="course-grid" id="courseOptions"></div>
+      </div>
+      <button class="btn btn-primary btn-block" id="courseNext" disabled>리뷰 완료하기</button>
+    </section>
+
+    <!-- 4. 완료 -->
+    <section class="screen" data-screen="done">
+      <div class="frame frame-done">
+        <div class="stamp" aria-hidden="true">APPROVED</div>
+        <p class="eyebrow">리뷰 완료</p>
+        <h2 class="q">고마워요 <span data-her></span>!<br>그날 봬요 🎃</h2>
+        <dl class="summary" id="summary"></dl>
+      </div>
+      <button class="btn btn-primary btn-block" id="shareBtn">답장 보내기</button>
+      <p class="hint">버튼을 누르면 내용이 복사돼요. 카톡에 붙여넣어 주세요!</p>
+    </section>
+
+    <!-- 거절 -->
+    <section class="screen" data-screen="bye">
+      <div class="notice">
+        <div class="notice-icon" aria-hidden="true">🙂</div>
+        <h2 class="notice-title">알겠어요!<br>편하게 말해줘서 고마워요</h2>
+        <p class="notice-desc">언제든 생각나면 연락 주세요</p>
+        <button class="link-subtle" data-go="ask">← 다시 볼래요</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
